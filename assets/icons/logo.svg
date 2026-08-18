@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="100%" stop-color="#1E293B" />
+    </linearGradient>
+
+    <!-- Outer Emerald Glow Ring -->
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <!-- Bar 1 Gradient (Expenses / Outflow - Coral Accent) -->
+    <linearGradient id="bar1Grad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#F43F5E" />
+      <stop offset="100%" stop-color="#FB7185" />
+    </linearGradient>
+
+    <!-- Bar 2 Gradient (Mid Level - Teal Accent) -->
+    <linearGradient id="bar2Grad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <!-- Bar 3 Gradient (Peak Growth / Savings - Vivid Emerald) -->
+    <linearGradient id="bar3Grad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#34D399" />
+    </linearGradient>
+
+    <!-- Arrow Dynamic Gradient -->
+    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#A7F3D0" />
+    </linearGradient>
+
+    <!-- Card Glassmorphism Overlay -->
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.07" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.02" />
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="20" stdDeviation="25" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+
+    <!-- Glow Filter for Arrow -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Base Rounded Container (Standard App Icon Canvas) -->
+  <rect width="1024" height="1024" rx="225" fill="url(#bgGrad)" />
+
+  <!-- Subtle Outer Framing Ring -->
+  <rect x="32" y="32" width="960" height="960" rx="193" fill="none" stroke="url(#ringGrad)" stroke-width="4" stroke-opacity="0.3" />
+
+  <!-- Central Glassmorphism Card Container -->
+  <g filter="url(#dropShadow)">
+    <rect x="140" y="140" width="744" height="744" rx="160" fill="url(#glassGrad)" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="3" />
+  </g>
+
+  <!-- Abstract Wallet / Tracker Frame Loop (Minimalist Overlap) -->
+  <path d="M 280 320 H 680 C 735 320, 780 365, 780 420 V 620 C 780 675, 735 720, 680 720 H 280 C 225 720, 180 675, 180 620 V 420 C 180 365, 225 320, 280 320 Z" 
+        fill="none" 
+        stroke="#334155" 
+        stroke-width="18" 
+        stroke-dasharray="12 12" 
+        opacity="0.4" />
+
+  <!-- Core Graph Bars (Representing Expense Tracking Categories) -->
+  <g filter="url(#dropShadow)">
+    <!-- Bar 1: Low/Expense Baseline -->
+    <rect x="290" y="520" width="90" height="180" rx="24" fill="url(#bar1Grad)" />
+    
+    <!-- Bar 2: Mid-level Tracking -->
+    <rect x="420" y="420" width="90" height="280" rx="24" fill="url(#bar2Grad)" />
+    
+    <!-- Bar 3: Peak / Target Balance -->
+    <rect x="550" y="320" width="90" height="380" rx="24" fill="url(#bar3Grad)" />
+  </g>
+
+  <!-- Dynamic Trendline & Arrow (Swooping Growth Overlay) -->
+  <g filter="url(#glow)">
+    <!-- Smooth Spline Curve traversing through the bars -->
+    <path d="M 230 610 Q 380 570, 460 450 T 710 270" 
+          fill="none" 
+          stroke="url(#arrowGrad)" 
+          stroke-width="28" 
+          stroke-linecap="round" />
+
+    <!-- Sharp Arrowhead at Peak -->
+    <path d="M 620 250 H 730 V 360" 
+          fill="none" 
+          stroke="url(#arrowGrad)" 
+          stroke-width="28" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+  </g>
+
+  <!-- Glowing Accent Node on Arrow Tip -->
+  <circle cx="730" cy="250" r="16" fill="#FFFFFF" filter="url(#glow)" />
+
+  <!-- Minimalist Currency / Coin Symbol Floating Accent -->
+  <g transform="translate(670, 610)" filter="url(#dropShadow)">
+    <circle cx="0" cy="0" r="55" fill="#10B981" />
+    <circle cx="0" cy="0" r="42" fill="none" stroke="#A7F3D0" stroke-width="6" />
+    <!-- Centered Dollar / Balance Glyph -->
+    <path d="M 0 -22 V 22 M -12 -12 C -12 -12, 12 -16, 12 -4 C 12 8, -12 4, -12 14 C -12 24, 12 20, 12 20" 
+          fill="none" 
+          stroke="#FFFFFF" 
+          stroke-width="8" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+  </g>
+</svg>
