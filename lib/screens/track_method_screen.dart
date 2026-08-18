@@ -8,7 +8,6 @@ class TrackMethodScreen extends StatefulWidget {
 class _TrackMethodState extends State<TrackMethodScreen> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SafeArea(
       top: true,
       bottom: false,
@@ -17,30 +16,32 @@ class _TrackMethodState extends State<TrackMethodScreen> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "How would you like to track your spending",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    Text(
-                      "Select your preferred method. All your financial data is processed and stored only on your local device.",
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                  ],
+        child: Scaffold(
+          body: Column(
+            children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "How would you like to track your spending",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      Text(
+                        "Select your preferred method. All your financial data is processed and stored only on your local device.",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       ),
     );
   }

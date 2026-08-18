@@ -22,8 +22,7 @@ class MainScreen extends StatelessWidget {
           home: const Onboarding(),
           initialRoute: '/',
           routes: {
-            '/': (context) => const Onboarding(),
-            '/tracksys': (context) => TrackMethodScreen(),
+            '/trackmethod': (context) => const TrackMethodScreen(),
           },
         );
       },

@@ -31,7 +31,7 @@ class _OnboardingState extends State<Onboarding> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Select your Primary Categories",
+                        "Select your Primary Categories ${selectedItems > 3 ? '' : '($selectedItems/3 min)'}",
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
@@ -88,16 +88,20 @@ class _OnboardingState extends State<Onboarding> {
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 50,
-                child: FilledButton(
-                  onPressed: selectedItems >= 3 ? () => print("Clicked") : null,
-                  child: Text(
-                    selectedItems > 3
-                        ? "Save and Continue"
-                        : "3 items min($selectedItems items selected)",
+                height: 80,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 35.0, 16.0, 5.0),
+                  child: FilledButton(
+                    onPressed: selectedItems >= 3 ? () => Navigator.pushNamed(context, "/trackmethod") : null,
+                    child: Text(
+                      // selectedItems >= 3
+                      //     ? "Save and Continue"
+                      //     : "3 items min($selectedItems items selected)",
+                        "Save and Continue"
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
