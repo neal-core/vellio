@@ -20,7 +20,7 @@ final ThemeData lightTheme = ThemeData(
       fontSize: 20,
       fontFamily: "EduVic",
       fontWeight: FontWeight.w500,
-      color: Color(0xFF1A1D2E),
+      color: Color(0xFFB1B8ED),
     ),
     titleSmall: TextStyle(fontSize: 14, color: Color(0xFFB1B8ED)),
   ),
@@ -29,6 +29,17 @@ final ThemeData lightTheme = ThemeData(
     surfaceTintColor: Color(0xDB5A0F37),
     elevation: 6.0,
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return Color(0xFF353535);
+        }
+        return Color(0xDBE12B8D);
+      }),
+      elevation: WidgetStatePropertyAll(10),
+    )
+  )
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -57,5 +68,16 @@ final ThemeData darkTheme = ThemeData(
     color: Color(0xFF545EA6),
     surfaceTintColor: Color(0xFF2F3150),
     elevation: 6.0,
+  ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+        if (states.contains(WidgetState.disabled)) {
+          return Color(0xFF353535);
+        }
+        return Color(0xFF545EA6);
+      }),
+      elevation: WidgetStatePropertyAll(10),
+    ),
   ),
 );
