@@ -21,9 +21,6 @@ class MainScreen extends StatelessWidget {
           themeMode: currentMode,
           home: const Onboarding(),
           initialRoute: '/',
-          routes: {
-            '/trackmethod': (context) => const TrackMethodScreen(),
-          },
         );
       },
     );

@@ -3,7 +3,8 @@ import 'package:vellio/components/onboardingItems.dart';
 import 'package:vellio/components/trackmethods.dart';
 
 class TrackMethodScreen extends StatefulWidget {
-  const TrackMethodScreen({super.key});
+  final List<String> selected;
+  const TrackMethodScreen({super.key, required this.selected});
   @override
   _TrackMethodState createState() => _TrackMethodState();
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vellio/components/onboardingItems.dart';
+import 'package:vellio/screens/track_method_screen.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -8,6 +9,7 @@ class Onboarding extends StatefulWidget {
 
 class _OnboardingState extends State<Onboarding> {
   int selectedItems = 0;
+  List<String> sel = [];
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -87,6 +89,12 @@ class _OnboardingState extends State<Onboarding> {
                             setState(() {
                               item['state'] = item['state'] == 'selected' ? 'unselected' : 'selected';
                               selectedItems = item['state'] == 'selected' ? selectedItems + 1 : selectedItems - 1;
+                              sel.clear();
+                              for (var cat in onboardingItems) {
+                                if (cat['state'] == 'selected') {
+                                  sel.add(cat['title']);
+                                }
+                              }
                             })
                           },
                           child: Center(
@@ -106,39 +114,6 @@ class _OnboardingState extends State<Onboarding> {
                         ),
                       ),
                     ),
-                    // child: Card.filled(
-                    //   child: InkWell(
-                    //     onTap: () {
-                    //       setState(() {
-                    //         item['state'] = item['state'] == 'unselected'
-                    //             ? 'selected'
-                    //             : 'unselected';
-                    //         selectedItems = item['state'] == 'selected'
-                    //             ? selectedItems += 1
-                    //             : selectedItems -= 1;
-                    //       });
-                    //     },
-                    //     child: Center(
-                    //       child: Column(
-                    //         mainAxisSize: MainAxisSize.max,
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         crossAxisAlignment: CrossAxisAlignment.center,
-                    //         spacing: 3,
-                    //         children: [
-                    //           Icon(
-                    //             item["icon"],
-                    //             size: 35.0,
-                    //             color: Color(0xFFB1B8ED),
-                    //           ),
-                    //           Text(
-                    //             "${item['name']} ${item['state'] == 'selected' ? '✔️' : '✖️'}",
-                    //             style: Theme.of(context).textTheme.titleMedium,
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                   );
                 }).toList(),
               ),
@@ -148,7 +123,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 35.0, 16.0, 5.0),
                   child: ElevatedButton(
-                    onPressed: selectedItems >= 3 ? () => Navigator.pushNamed(context, '/trackmethod') : null,
+                    onPressed: selectedItems >= 3 ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMethodScreen(selected: sel))) : null,
                     child: Text("Save and Continue", style: TextStyle(color: Color(0xFFB1B8ED)),),
                   )
                 ),
