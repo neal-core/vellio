@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vellio/components/onboardingItems.dart';
+import 'package:vellio/data/onboardingItems.dart';
 import 'package:vellio/screens/track_method_screen.dart';
 
 class Onboarding extends StatefulWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vellio/components/onboardingItems.dart';
-import 'package:vellio/components/trackMethods.dart';
+import 'package:vellio/data/trackMethods.dart';
 import 'package:vellio/screens/budget_screen.dart';
 
 class TrackMethodScreen extends StatefulWidget {
