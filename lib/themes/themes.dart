@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
 
-final ValueNotifier<ThemeMode> themeNotif = ValueNotifier(ThemeMode.system);
+final ValueNotifier<ThemeMode> themeNotif = ValueNotifier(ThemeMode.dark);
 
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Color(0xDBE12B8D),
+    seedColor: const Color(0xFF005AC1),
     brightness: Brightness.light,
   ),
-  scaffoldBackgroundColor: Color(0xFFF6F6F6),
+  scaffoldBackgroundColor: const Color(0xFFF8F9FF),
   textTheme: const TextTheme(
     titleLarge: TextStyle(
       fontSize: 26,
       fontFamily: "Griffy",
       fontWeight: FontWeight.bold,
-      color: Color(0xFF6978E6),
+      color: Color(0xFF005AC1),
     ),
     titleMedium: TextStyle(
       fontSize: 20,
       fontFamily: "EduVic",
       fontWeight: FontWeight.w500,
-      color: Color(0xFFB1B8ED),
+      color: Color(0xFF1B1B1F),
     ),
-    titleSmall: TextStyle(fontSize: 14, color: Color(0xFFB1B8ED)),
+    titleSmall: TextStyle(fontSize: 14, color: Color(0xFF44474E)),
   ),
-  cardTheme: CardThemeData(
-    color: Color(0xDBE12B8D),
-    surfaceTintColor: Color(0xDB5A0F37),
-    elevation: 6.0,
+  cardTheme: const CardThemeData(
+    color: Colors.white,
+    surfaceTintColor: Color(0xFFD8E2FF),
+    elevation: 2.0,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.disabled)) {
-          return Color(0xFF353535);
+          return const Color(0xFFE1E2EC);
         }
-        return Color(0xDBE12B8D);
+        return const Color(0xFF005AC1);
       }),
-      elevation: WidgetStatePropertyAll(10),
-    )
-  )
+      foregroundColor: const WidgetStatePropertyAll(Colors.white),
+      elevation: const WidgetStatePropertyAll(2),
+    ),
+  ),
 );
 
 final ThemeData darkTheme = ThemeData(

@@ -55,30 +55,40 @@ class _OnboardingState extends State<Onboarding> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
-                        border: item['state'] == 'selected' ? Border.all(
-                            color: isDark == true ? Color(0xE22734CD) : Color(0xDB681340),
-                            width: 1.5
-                        ) : null,
+                        border: item['state'] == 'selected'
+                            ? Border.all(
+                                color: isDark == true
+                                    ? Color(0xE22734CD)
+                                    : Color(0xDB681340),
+                                width: 1.5,
+                              )
+                            : null,
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            isDark == true ? Color(0xFF545EA6) : Color(0xDBE12B8D),
-                            isDark == true ? Color(0xFF2F3150) : Color(0xDB5A0F37)
-                          ]
+                            isDark == true
+                                ? Color(0xFF545EA6)
+                                : Color(0xDBE12B8D),
+                            isDark == true
+                                ? Color(0xFF2F3150)
+                                : Color(0xDB5A0F37),
+                          ],
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: isDark == true ? Color(0xE2202361) : Color(0xDB5A1037),
+                            color: isDark == true
+                                ? Color(0xE2202361)
+                                : Color(0xDB5A1037),
                             blurRadius: 12,
                             spreadRadius: 1,
                           ),
                           BoxShadow(
                             color: const Color(0x59000000),
                             blurRadius: 8,
-                            offset: const Offset(0,4)
-                          )
-                        ]
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Material(
                         color: Colors.transparent,
@@ -87,15 +97,13 @@ class _OnboardingState extends State<Onboarding> {
                           borderRadius: BorderRadius.circular(18),
                           onTap: () => {
                             setState(() {
-                              item['state'] = item['state'] == 'selected' ? 'unselected' : 'selected';
-                              selectedItems = item['state'] == 'selected' ? selectedItems + 1 : selectedItems - 1;
-                              sel.clear();
-                              for (var cat in onboardingItems) {
-                                if (cat['state'] == 'selected') {
-                                  sel.add(cat['title']);
-                                }
-                              }
-                            })
+                              item['state'] = item['state'] == 'selected'
+                                  ? 'unselected'
+                                  : 'selected';
+                              selectedItems = item['state'] == 'selected'
+                                  ? selectedItems + 1
+                                  : selectedItems - 1;
+                            }),
                           },
                           child: Center(
                             child: Column(
@@ -105,9 +113,16 @@ class _OnboardingState extends State<Onboarding> {
                               spacing: 3,
                               children: [
                                 Icon(
-                                  item['icon'], size: 35.0, color: const Color(0xFFCCD2FF),
+                                  item['icon'],
+                                  size: 35.0,
+                                  color: const Color(0xFFCCD2FF),
                                 ),
-                                Text("${item['name']} ${item['state'] == 'selected' ? '✔️' : '✖️'}", style: Theme.of(context).textTheme.titleMedium,)
+                                Text(
+                                  "${item['name']} ${item['state'] == 'selected' ? '✔️' : '✖️'}",
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium,
+                                ),
                               ],
                             ),
                           ),
@@ -123,11 +138,34 @@ class _OnboardingState extends State<Onboarding> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16.0, 35.0, 16.0, 5.0),
                   child: ElevatedButton(
-                    onPressed: selectedItems >= 3 ? () => Navigator.push(context, MaterialPageRoute(builder: (context) => TrackMethodScreen(selected: sel))) : null,
-                    child: Text("Save and Continue", style: TextStyle(color: Color(0xFFB1B8ED)),),
-                  )
+                    onPressed: selectedItems >= 3
+                        ? () => {
+                            setState(() {
+                              sel.clear();
+                              for (var cat in onboardingItems) {
+                                if (cat['state'] == 'selected') {
+                                  sel.add(cat['name']);
+                                }
+                              }
+                              ;
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TrackMethodScreen(
+                                    selectedCategories: sel,
+                                  ),
+                                ),
+                              );
+                            }),
+                          }
+                        : null,
+                    child: Text(
+                      "Save and Continue",
+                      style: TextStyle(color: Color(0xFFB1B8ED)),
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
