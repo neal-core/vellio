@@ -9,20 +9,21 @@ final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
   ),
   scaffoldBackgroundColor: const Color(0xFFF8F9FF),
-  textTheme: const TextTheme(
-    titleLarge: TextStyle(
+  textTheme: TextTheme(
+    titleLarge: const TextStyle(
       fontSize: 26,
       fontFamily: "Griffy",
       fontWeight: FontWeight.bold,
       color: Color(0xFF005AC1),
     ),
-    titleMedium: TextStyle(
+    titleMedium: const TextStyle(
       fontSize: 20,
       fontFamily: "EduVic",
       fontWeight: FontWeight.w500,
       color: Color(0xFF1B1B1F),
     ),
-    titleSmall: TextStyle(fontSize: 14, color: Color(0xFF44474E)),
+    titleSmall: const TextStyle(fontSize: 14, color: Color(0xFF44474E)),
+    labelSmall: TextStyle(color: Colors.grey[600], fontSize: 17)
   ),
   cardTheme: const CardThemeData(
     color: Colors.white,
@@ -50,20 +51,26 @@ final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   scaffoldBackgroundColor: Color(0xFF1A1D2E),
-  textTheme: const TextTheme(
-    titleLarge: TextStyle(
-      fontSize: 26,
+  textTheme: TextTheme(
+    titleLarge: const TextStyle(
+      fontSize: 22,
       fontFamily: "Griffy",
       fontWeight: FontWeight.bold,
       color: Color(0xFF9AA4FF),
     ),
-    titleMedium: TextStyle(
+    titleMedium: const TextStyle(
       fontSize: 20,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       fontFamily: "EduVic",
       color: Color(0xFFCCD2FF),
     ),
-    titleSmall: TextStyle(fontSize: 14, color: Color(0xFFCCD2FF)),
+    titleSmall: const TextStyle(fontSize: 14, color: Color(0xFFCCD2FF)),
+    labelLarge: const TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: Color(0xFFCCD2FF),
+    ),
+    labelSmall: TextStyle(color: Colors.grey[400], fontSize: 17),
   ),
   cardTheme: CardThemeData(
     color: Color(0xFF545EA6),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vellio/services/onboarding_data_manager.dart';
+import 'package:vellio/screens/dashboard_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   final List<String> selectedCategories;
@@ -16,6 +18,15 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetState extends State<BudgetScreen> {
   final TextEditingController _budgetControl = TextEditingController();
   late String descriptor = "";
+  void StoreOBData(double budget) async {
+    OnboardingDataManager obs = OnboardingDataManager();
+    await obs.writeFile(
+      categories: widget.selectedCategories,
+      trackMethod: widget.selectedMethod,
+      budget: budget,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark
@@ -124,12 +135,11 @@ class _BudgetState extends State<BudgetScreen> {
                               Expanded(
                                 child: Text(
                                   descriptor,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall!.copyWith(
-                                    color: const Color(0xFFBA1A1A),
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: Theme.of(context).textTheme.titleSmall!
+                                      .copyWith(
+                                        color: const Color(0xFFBA1A1A),
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                 ),
                               ),
                             ],
@@ -152,6 +162,13 @@ class _BudgetState extends State<BudgetScreen> {
                           descriptor = "";
                           if (double.tryParse(_budgetControl.text)! >= 500.00) {
                             descriptor = "";
+                            StoreOBData(double.parse(_budgetControl.text));
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Dashboard(),
+                              ),
+                            );
                           } else {
                             descriptor = "Amount must be at least ₦500.00";
                           }

@@ -19,7 +19,7 @@ class _OnboardingState extends State<Onboarding> {
       left: true,
       right: true,
       child: SizedBox(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
         height: double.infinity,
         child: Scaffold(
           body: Column(
