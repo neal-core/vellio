@@ -95,12 +95,28 @@ flutter:
   fonts:
     - family: Griffy
       fonts:
-        - asset: assets/fonts/Griffy.ttf
+        - asset: assets/fonts/griffy.ttf
           weight: 500
     - family: EduVic
       fonts:
-        - asset: assets/fonts/EduVic.ttf
+        - asset: assets/fonts/edu_vic.ttf
           weight: 300
+    - family: Gadugi
+      fonts:
+        - asset: assets/fonts/gadugi.ttf
+          weight: 200
+    - family: ComicSans
+      fonts:
+        - asset: assets/fonts/comicz.ttf
+          weight: 200
+    - family: Bricolage
+      fonts:
+        - asset: assets/fonts/bricolage_grotesque.ttf
+          weight: 200
+    - family: Josefin
+      fonts:
+        - asset: assets/fonts/josefin_sans.ttf
+          weight: 500
 flutter_launcher_icons:
   android: true
   ios: true
