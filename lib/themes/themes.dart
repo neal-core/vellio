@@ -5,7 +5,7 @@ final ValueNotifier<ThemeMode> themeNotif = ValueNotifier(ThemeMode.dark);
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0xFF005AC1),
+    seedColor: const Color(0xFFB8BBE0),
     brightness: Brightness.light,
   ),
   scaffoldBackgroundColor: const Color(0xFFF6F6FA),
@@ -42,9 +42,9 @@ final ThemeData lightTheme = ThemeData(
     style: ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.disabled)) {
-          return const Color(0xFFE1E2EC);
+          return const Color(0xFF706D6D);
         }
-        return const Color(0xFF005AC1);
+        return const Color(0xFFB8BBE0);
       }),
       foregroundColor: const WidgetStatePropertyAll(Colors.white),
       elevation: const WidgetStatePropertyAll(2),
