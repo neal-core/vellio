@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vellio/components/input_field.dart';
+import 'package:vellio/components/submit_button.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
 import 'package:vellio/screens/dashboard_screen.dart';
 
@@ -19,7 +21,22 @@ class BudgetScreen extends StatefulWidget {
 
 class _BudgetState extends State<BudgetScreen> {
   final TextEditingController _budgetControl = TextEditingController();
-  late String descriptor = "";
+  late String finalBudget = "";
+
+  void budgetAlloc(String budgetInput) {
+    setState(() {
+      finalBudget = budgetInput;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print(
+      "Name: ${widget.name}, categories: ${widget.selectedCategories}, track method: ${widget.selectedMethod}",
+    );
+  }
+
   void storeOBData(double budget) async {
     OnboardingDataManager obs = OnboardingDataManager();
     await obs.writeFile(
@@ -35,159 +52,99 @@ class _BudgetState extends State<BudgetScreen> {
     bool isDark = Theme.of(context).brightness == Brightness.dark
         ? true
         : false;
-    return SafeArea(
-      top: true,
-      bottom: false,
-      left: true,
-      right: true,
-      child: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Scaffold(
-          body: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
+    late bool successCondition =
+        finalBudget.isNotEmpty &&
+        finalBudget.trim().length >= 3 &&
+        double.parse(finalBudget) >= 500.00;
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: AlignmentGeometry.topLeft,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Set Your Starting Balance",
+                        "Set your monthly budget",
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
-                        "Enter your current balance. We'll use this baseline to calculate your daily running funds entirely offline.",
+                        "How much are you working with for this month?",
                         style: Theme.of(context).textTheme.titleSmall,
                       ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(height: 15),
-              Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF331D3E),
-                        spreadRadius: 8.0,
-                        blurRadius: 14.0,
-                      ),
-                      BoxShadow(
-                        color: const Color(0xFF403845),
-                        offset: Offset(2, 2),
-                        spreadRadius: 10.0,
-                        blurRadius: 15.0,
-                      ),
-                      BoxShadow(
-                        color: const Color(0xE8342A51),
-                        offset: Offset(2, 5),
-                        spreadRadius: 12.0,
-                        blurRadius: 16.0,
-                      ),
-                    ],
-                    border: Border.all(
-                      color: const Color(0xE2283081),
-                      width: 0.5,
+                SizedBox(height: 25),
+                LNInput(
+                  hintText: "0.00",
+                  labelText: "Starting Amount",
+                  prefixText: "₦ ",
+                  prefixCol: Theme.of(context).textTheme.titleMedium?.color,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r"^\d{0,7}\.?\d{0,2}"),
                     ),
-                    color: isDark
-                        ? const Color(0xFF545EA6)
-                        : const Color(0xFF22CF20),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Balance",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      TextField(
-                        controller: _budgetControl,
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r'^\d{0,7}\.?\d{0,2}'),
+                  ],
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  textController: _budgetControl,
+                  changeFn: budgetAlloc,
+                  successCondition: successCondition,
+                  errorText: "Invalid amount entered. Min. amount is ₦500.00",
+                ),
+                SizedBox(height: 25),
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: LNSubmitButton(
+                    submit: () async {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: const Color(0xFF2F3150),
+                          elevation: 10,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 24,
                           ),
-                        ],
-                        decoration: InputDecoration(
-                          prefixText: "₦ ",
-                          prefixStyle: Theme.of(context).textTheme.titleMedium,
-                          hintText: "0.00",
-                          hintStyle: TextStyle(color: Color(0xFF535252)),
-                        ),
-                      ),
-                      if (descriptor.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Row(
+                          behavior: SnackBarBehavior.floating,
+                          dismissDirection: DismissDirection.down,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          duration: Duration(seconds: 5),
+                          content: Row(
                             children: [
                               const Icon(
-                                Icons.error_outline,
-                                size: 16,
-                                color: Color(0xFFBA1A1A),
+                                Icons.check_circle_outline,
+                                color: Color(0xFF9AA4FF),
                               ),
-                              const SizedBox(width: 6),
-                              Expanded(
-                                child: Text(
-                                  descriptor,
-                                  style: Theme.of(context).textTheme.titleSmall!
-                                      .copyWith(
-                                        color: const Color(0xFFBA1A1A),
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
+                              const SizedBox(width: 12),
+                              Text(
+                                "Budget saved successfully!",
+                                style: Theme.of(context).textTheme.titleSmall
+                                    ?.copyWith(
+                                      color: const Color(0xFFCCD2FF),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
                               ),
                             ],
                           ),
                         ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(width: double.infinity, height: 20),
-              SizedBox(
-                width: double.infinity,
-                height: 75,
-                child: Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        if (_budgetControl.text != "") {
-                          descriptor = "";
-                          if (double.tryParse(_budgetControl.text)! >= 500.00) {
-                            descriptor = "";
-                            storeOBData(double.parse(_budgetControl.text));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Dashboard(),
-                              ),
-                            );
-                          } else {
-                            descriptor = "Amount must be at least ₦500.00";
-                          }
-                        } else {
-                          descriptor = "No amount specified";
-                        }
-                      });
+                      );
                     },
-                    child: Text(
-                      "Continue",
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
+                    submitReq: successCondition,
+                    btnTxt: "Continue",
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

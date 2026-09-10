@@ -23,6 +23,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
       if (tm['status'] == 'selected') tm['status'] = 'unselected';
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -239,7 +240,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                         : null,
                     child: Text(
                       "Continue",
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ),

@@ -8,23 +8,23 @@ final ThemeData lightTheme = ThemeData(
     seedColor: const Color(0xFF005AC1),
     brightness: Brightness.light,
   ),
-  scaffoldBackgroundColor: const Color(0xFFF8F9FF),
+  scaffoldBackgroundColor: const Color(0xFFF6F6FA),
   textTheme: TextTheme(
     titleLarge: const TextStyle(
       fontSize: 22,
       fontFamily: "Josefin",
       fontWeight: FontWeight.bold,
-      color: Color(0xFF005AC1),
+      color: Color(0xFF5A5C7F),
     ),
     titleMedium: const TextStyle(
       fontSize: 18,
       fontFamily: "EduVic",
       fontWeight: FontWeight.w500,
-      color: Color(0xFF1B1B1F),
+      color: Color(0xFF797C9E),
     ),
     titleSmall: const TextStyle(
       fontSize: 12,
-      color: Color(0xFF44474E),
+      color: Color(0xFF8688A5),
       fontFamily: "ComicSans",
     ),
     labelSmall: TextStyle(
