@@ -5,7 +5,7 @@ import 'package:encrypt/encrypt.dart' as enc;
 import 'package:path_provider/path_provider.dart';
 
 class OnboardingDataManager {
-  static const _fileName = "onboardingData.lnl";
+  static const _fileName = "onbdt.lnl";
   final _secureStorage = FlutterSecureStorage();
   static const _keyName = 'odm-key';
   Future<File> get _getFile async {
@@ -24,6 +24,7 @@ class OnboardingDataManager {
   }
 
   Future<void> writeFile({
+    required String name,
     required List<String> categories,
     required String trackMethod,
     required double budget,
@@ -31,6 +32,7 @@ class OnboardingDataManager {
     final key = await _getKey();
     final iv = enc.IV.fromSecureRandom(16);
     final Map<String, dynamic> obItems = {
+      'name': name,
       'categories': categories,
       'track_method': trackMethod,
       'budget': budget,
@@ -62,5 +64,10 @@ class OnboardingDataManager {
       print("Failed to read file: $e");
       return null;
     }
+  }
+
+  Future<void> deleteFile() async {
+    final docFile = await _getFile;
+    await docFile.delete();
   }
 }

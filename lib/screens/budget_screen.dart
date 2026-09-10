@@ -4,10 +4,12 @@ import 'package:vellio/services/onboarding_data_manager.dart';
 import 'package:vellio/screens/dashboard_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
+  final String name;
   final List<String> selectedCategories;
   final String selectedMethod;
   const BudgetScreen({
     super.key,
+    required this.name,
     required this.selectedCategories,
     required this.selectedMethod,
   });
@@ -18,9 +20,10 @@ class BudgetScreen extends StatefulWidget {
 class _BudgetState extends State<BudgetScreen> {
   final TextEditingController _budgetControl = TextEditingController();
   late String descriptor = "";
-  void StoreOBData(double budget) async {
+  void storeOBData(double budget) async {
     OnboardingDataManager obs = OnboardingDataManager();
     await obs.writeFile(
+      name: widget.name,
       categories: widget.selectedCategories,
       trackMethod: widget.selectedMethod,
       budget: budget,
@@ -162,7 +165,7 @@ class _BudgetState extends State<BudgetScreen> {
                           descriptor = "";
                           if (double.tryParse(_budgetControl.text)! >= 500.00) {
                             descriptor = "";
-                            StoreOBData(double.parse(_budgetControl.text));
+                            storeOBData(double.parse(_budgetControl.text));
                             Navigator.push(
                               context,
                               MaterialPageRoute(

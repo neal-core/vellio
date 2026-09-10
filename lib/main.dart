@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:vellio/screens/dashboard_screen.dart";
 import "package:vellio/screens/name_input_screen.dart";
-import "package:vellio/screens/onboarding.dart";
 import "package:vellio/services/onboarding_data_manager.dart";
 import "package:vellio/themes/themes.dart";
 
@@ -26,7 +25,7 @@ class MainScreen extends StatelessWidget {
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: currentMode,
-          home: const NameInput(),
+          home: syncComplete ? const Dashboard() : const NameInput(),
           initialRoute: '/',
         );
       },

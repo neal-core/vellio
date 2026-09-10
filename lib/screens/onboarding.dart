@@ -3,13 +3,23 @@ import 'package:vellio/data/onboardingItems.dart';
 import 'package:vellio/screens/track_method_screen.dart';
 
 class Onboarding extends StatefulWidget {
-  const Onboarding({super.key});
-  _OnboardingState createState() => _OnboardingState();
+  final String name;
+  const Onboarding({super.key, required this.name});
+  @override
+  State<Onboarding> createState() => _OnboardingState();
 }
 
 class _OnboardingState extends State<Onboarding> {
   int selectedItems = 0;
   List<String> sel = [];
+  @override
+  void initState() {
+    super.initState();
+    for (var cat in onboardingItems) {
+      if (cat['state'] == 'selected') cat['state'] = 'unselected';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -44,6 +54,7 @@ class _OnboardingState extends State<Onboarding> {
                   ),
                 ),
               ),
+              SizedBox(height: 15),
               Wrap(
                 direction: Axis.horizontal,
                 spacing: 8,
@@ -132,13 +143,14 @@ class _OnboardingState extends State<Onboarding> {
                   );
                 }).toList(),
               ),
+              SizedBox(height: 15),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: 80,
+                height: 75,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 35.0, 16.0, 5.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
-                    onPressed: selectedItems >= 3
+                    onPressed: selectedItems == 3
                         ? () => {
                             setState(() {
                               sel.clear();
@@ -147,11 +159,11 @@ class _OnboardingState extends State<Onboarding> {
                                   sel.add(cat['name']);
                                 }
                               }
-                              ;
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => TrackMethodScreen(
+                                    name: widget.name,
                                     selectedCategories: sel,
                                   ),
                                 ),

@@ -4,13 +4,25 @@ import 'package:vellio/screens/budget_screen.dart';
 
 class TrackMethodScreen extends StatefulWidget {
   final List<String> selectedCategories;
-  const TrackMethodScreen({super.key, required this.selectedCategories});
+  final String name;
+  const TrackMethodScreen({
+    super.key,
+    required this.name,
+    required this.selectedCategories,
+  });
   @override
   _TrackMethodState createState() => _TrackMethodState();
 }
 
 class _TrackMethodState extends State<TrackMethodScreen> {
   String selectedTM = "default";
+  @override
+  void initState() {
+    super.initState();
+    for (var tm in trackMethods) {
+      if (tm['status'] == 'selected') tm['status'] = 'unselected';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -141,9 +153,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                   const SizedBox(height: 8),
                                   Container(
                                     height: 1,
-                                    color: const Color(
-                                      0xFF00B878,
-                                    ).withOpacity(0.45),
+                                    color: const Color(0x7300B878),
                                   ),
                                   const SizedBox(height: 10),
                                   Expanded(
@@ -158,8 +168,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                                 .textTheme
                                                 .bodyMedium
                                                 ?.copyWith(
-                                                  color: Colors.white
-                                                      .withOpacity(0.9),
+                                                  color: Color(0xE4FFFFFF),
                                                   fontSize: 15,
                                                   height: 1.25,
                                                 ),
@@ -180,12 +189,8 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                               BoxShadow(
                                                 color:
                                                     mthd['status'] == 'selected'
-                                                    ? const Color(
-                                                        0xFF00E89A,
-                                                      ).withOpacity(0.45)
-                                                    : const Color(
-                                                        0xFFFF0000,
-                                                      ).withOpacity(0.35),
+                                                    ? const Color(0x7300E89A)
+                                                    : const Color(0x5AFF0000),
                                                 blurRadius: 10,
                                               ),
                                             ],
@@ -225,6 +230,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => BudgetScreen(
+                                name: widget.name,
                                 selectedCategories: widget.selectedCategories,
                                 selectedMethod: selectedTM,
                               ),

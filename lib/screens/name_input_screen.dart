@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vellio/components/submit_button.dart';
+import 'package:vellio/screens/onboarding.dart';
+import 'package:vellio/services/onboarding_data_manager.dart';
 
 class NameInput extends StatefulWidget {
   const NameInput({super.key});
@@ -15,6 +19,11 @@ class _NameState extends State<NameInput> {
     setState(() {
       finalName = _nameController.text;
     });
+  }
+
+  Future<void> OBEditor() async {
+    final OnboardingDataManager manager = OnboardingDataManager();
+    await manager.deleteFile();
   }
 
   @override
@@ -150,7 +159,14 @@ class _NameState extends State<NameInput> {
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: LNSubmitButton(
-                      submit: () => print("Name Inputted"),
+                      submit: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Onboarding(name: finalName),
+                          ),
+                        );
+                      },
                       submitReq:
                           finalName.isNotEmpty && finalName.trim().length >= 4,
                       btnTxt: "Continue",
