@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final ValueNotifier<ThemeMode> themeNotif = ValueNotifier(ThemeMode.dark);
+final ValueNotifier<ThemeMode> themeNotif = ValueNotifier(ThemeMode.system);
 
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -31,6 +31,11 @@ final ThemeData lightTheme = ThemeData(
       color: Colors.grey[600],
       fontSize: 17,
       fontFamily: "Gadugi",
+    ),
+    labelLarge: const TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: Color(0xFF4A4C6A),
     ),
   ),
   cardTheme: const CardThemeData(

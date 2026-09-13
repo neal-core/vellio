@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:vellio/components/input_field.dart';
 import 'package:vellio/components/submit_button.dart';
 import 'package:vellio/screens/onboarding.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
@@ -28,6 +29,9 @@ class _NameState extends State<NameInput> {
 
   @override
   Widget build(BuildContext context) {
+    late bool successCondition =
+        finalName.isNotEmpty && finalName.trim().length >= 4;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
@@ -47,16 +51,22 @@ class _NameState extends State<NameInput> {
                           height: 80,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: const Color(0xFF27214F),
+                            color: isDark
+                                ? const Color(0xFF27214F)
+                                : const Color(0xFFE8E9F3),
                             border: Border.all(
-                              color: const Color(0xFFA1A4EA),
+                              color: isDark
+                                  ? const Color(0xFFA1A4EA)
+                                  : const Color(0xFFC7C9E5),
                               width: 2,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.person_4,
                             size: 50,
-                            color: Color(0xFF433E75),
+                            color: isDark
+                                ? const Color(0xFF433E75)
+                                : const Color(0xFF9EA1CA),
                           ),
                         ),
                         Positioned(
@@ -65,13 +75,17 @@ class _NameState extends State<NameInput> {
                           child: Container(
                             padding: EdgeInsets.all(4.0),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF38385C),
+                              color: isDark
+                                  ? const Color(0xFF38385C)
+                                  : const Color(0xFFD6D8EE),
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
                               size: 16,
-                              color: Color(0XFFA1A4EA),
+                              color: isDark
+                                  ? const Color(0XFFA1A4EA)
+                                  : const Color(0xFF6B6E9C),
                             ),
                           ),
                         ),
@@ -96,61 +110,20 @@ class _NameState extends State<NameInput> {
                   ],
                 ),
                 SizedBox(height: 30),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15.0,
-                    horizontal: 5.0,
-                  ),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  alignment: AlignmentGeometry.center,
-                  decoration: BoxDecoration(
-                    color: const Color(0XFF545EA6),
-                    borderRadius: BorderRadius.circular(18.0),
-                    border: Border.all(
-                      color: const Color(0xFF6E75C3),
-                      width: 1,
+                LNInput(
+                  hintText: "e.g. Net Anderson",
+                  labelText: "Name",
+                  keyboardType: TextInputType.name,
+                  textController: _nameController,
+                  changeFn: nameAlloc,
+                  successCondition: successCondition,
+                  errorText: "Please input a valid name",
+                  capitalization: TextCapitalization.words,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r"^[a-zA-Z\s\'\-]{1,30}$"),
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xE2202361),
-                        blurRadius: 12,
-                        spreadRadius: 1,
-                      ),
-                      BoxShadow(
-                        color: Color(0X59000000),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      TextField(
-                        controller: _nameController,
-                        onChanged: nameAlloc,
-                        textCapitalization: TextCapitalization.words,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(
-                            RegExp(r"^[a-zA-Z\s\'\-]{1,30}$"),
-                          ),
-                        ],
-                        style: Theme.of(context).textTheme.labelLarge,
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                          hintText: "e.g. Net Anderson",
-                          hintStyle: Theme.of(context).textTheme.labelSmall,
-                          errorText:
-                              finalName.isNotEmpty &&
-                                  finalName.trim().length >= 4
-                              ? ""
-                              : "Please input a valid name",
-                          labelText: "Name",
-                          labelStyle: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
                 SizedBox(height: 20),
                 SizedBox(

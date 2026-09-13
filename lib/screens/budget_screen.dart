@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:vellio/components/input_field.dart';
 import 'package:vellio/components/submit_button.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
-import 'package:vellio/screens/dashboard_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   final String name;

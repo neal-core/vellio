@@ -17,8 +17,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<Map<String, dynamic>> fetchObData() async {
-    final OnboardingDataManager _manager = OnboardingDataManager();
-    final Map<String, dynamic>? dataFetched = await _manager.readFile();
+    final OnboardingDataManager manager = OnboardingDataManager();
+    final Map<String, dynamic>? dataFetched = await manager.readFile();
     return dataFetched ?? {};
   }
 

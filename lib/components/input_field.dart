@@ -31,10 +31,9 @@ class LNInput extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.15,
-      alignment: AlignmentGeometry.center,
+      height: MediaQuery.of(context).size.height * 0.12,
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF5E65A4) : const Color(0xFFE8EAF6),
         borderRadius: BorderRadius.circular(18.0),

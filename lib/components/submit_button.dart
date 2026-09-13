@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class LNSubmitButton extends StatelessWidget {
@@ -20,8 +18,11 @@ class LNSubmitButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(btnTxt, style: Theme.of(context).textTheme.titleMedium),
-          SizedBox(width: 8),
-          Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+          SizedBox(width: 10),
+          Padding(
+            padding: const EdgeInsetsGeometry.only(top: 2),
+            child: Icon(Icons.arrow_forward_ios, color: Colors.white, size: 20),
+          ),
         ],
       ),
     );

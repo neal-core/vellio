@@ -26,6 +26,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return SafeArea(
       top: true,
       bottom: false,
@@ -70,11 +71,17 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Color(0xFF545EA6), Color(0xFF2F3150)],
-                          ),
+                          gradient: isDark
+                              ? const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF545EA6),
+                                    Color(0xFF2F3150),
+                                  ],
+                                )
+                              : null,
+                          color: isDark ? null : const Color(0xFFB8BBE0),
                           border: mthd['status'] == 'selected'
                               ? Border.all(
                                   color: const Color(0xE2283081),
@@ -100,7 +107,6 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(18),
                             onTap: () {
-                              print("Track Method selected");
                               setState(() {
                                 mthd['status'] = mthd['status'] == 'selected'
                                     ? 'unselected'

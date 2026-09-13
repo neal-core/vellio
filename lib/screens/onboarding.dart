@@ -68,34 +68,27 @@ class _OnboardingState extends State<Onboarding> {
                         borderRadius: BorderRadius.circular(18),
                         border: item['state'] == 'selected'
                             ? Border.all(
-                                color: isDark == true
-                                    ? Color(0xE22734CD)
-                                    : Color(0xDB681340),
+                                color: const Color(0xFF6E75C3),
                                 width: 1.5,
                               )
                             : null,
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            isDark == true
-                                ? Color(0xFF545EA6)
-                                : Color(0xDBE12B8D),
-                            isDark == true
-                                ? Color(0xFF2F3150)
-                                : Color(0xDB5A0F37),
-                          ],
-                        ),
+                        color: isDark
+                            ? const Color(0xFF5E65A4)
+                            : (item['state'] == 'selected'
+                                  ? const Color(0x626E75C3)
+                                  : const Color(0xFFE8EAF6)),
                         boxShadow: [
                           BoxShadow(
-                            color: isDark == true
-                                ? Color(0xE2202361)
-                                : Color(0xDB5A1037),
-                            blurRadius: 12,
+                            color: isDark
+                                ? const Color(0xFF5E65A4)
+                                : const Color(0xE27F74DD),
+                            blurRadius: 10,
                             spreadRadius: 1,
                           ),
                           BoxShadow(
-                            color: const Color(0x59000000),
+                            color: isDark
+                                ? const Color(0xFF5E65A4)
+                                : const Color(0xB3C3BAD5),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),
@@ -126,7 +119,9 @@ class _OnboardingState extends State<Onboarding> {
                                 Icon(
                                   item['icon'],
                                   size: 35.0,
-                                  color: const Color(0xFFCCD2FF),
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium?.color,
                                 ),
                                 Text(
                                   "${item['name']} ${item['state'] == 'selected' ? '✔️' : '✖️'}",
