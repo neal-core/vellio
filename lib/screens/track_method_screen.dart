@@ -84,18 +84,18 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                           color: isDark ? null : const Color(0xFFB8BBE0),
                           border: mthd['status'] == 'selected'
                               ? Border.all(
-                                  color: const Color(0xE2283081),
+                                  color: isDark ? const Color(0xE2283081) : const Color(0xFF6E75C3),
                                   width: 1.5,
                                 )
                               : null,
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xE2202361),
+                              color: isDark ? const Color(0xE2202361) : const Color(0xE27F74DD),
                               blurRadius: 12,
                               spreadRadius: 1,
                             ),
                             BoxShadow(
-                              color: Color(0X59000000),
+                              color: isDark ? Color(0X59000000) : const Color(0xB3C3BAD5),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -140,7 +140,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                               .textTheme
                                               .titleMedium
                                               ?.copyWith(
-                                                color: Colors.white,
+                                                // color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
                                               ),
@@ -152,7 +152,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                       Icon(
                                         mthd['icon'],
                                         size: 32,
-                                        color: const Color(0xFFCCD2FF),
+                                        color: Theme.of(context).textTheme.titleMedium?.color,
                                       ),
                                     ],
                                   ),
@@ -175,7 +175,7 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                                 .textTheme
                                                 .bodyMedium
                                                 ?.copyWith(
-                                                  color: Color(0xE4FFFFFF),
+                                                  // color: Color(0xE4FFFFFF),
                                                   fontSize: 15,
                                                   height: 1.25,
                                                 ),

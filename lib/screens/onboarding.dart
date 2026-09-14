@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vellio/components/submit_button.dart';
 import 'package:vellio/data/onboardingItems.dart';
 import 'package:vellio/screens/track_method_screen.dart';
 
@@ -144,32 +145,55 @@ class _OnboardingState extends State<Onboarding> {
                 height: 75,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(
-                    onPressed: selectedItems == 3
-                        ? () => {
-                            setState(() {
-                              sel.clear();
-                              for (var cat in onboardingItems) {
-                                if (cat['state'] == 'selected') {
-                                  sel.add(cat['name']);
-                                }
-                              }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TrackMethodScreen(
-                                    name: widget.name,
-                                    selectedCategories: sel,
-                                  ),
-                                ),
-                              );
-                            }),
+                  // child: ElevatedButton(
+                  //   onPressed: selectedItems == 3
+                  //       ? () => {
+                  //           setState(() {
+                  //             sel.clear();
+                  //             for (var cat in onboardingItems) {
+                  //               if (cat['state'] == 'selected') {
+                  //                 sel.add(cat['name']);
+                  //               }
+                  //             }
+                  //             Navigator.push(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                 builder: (context) => TrackMethodScreen(
+                  //                   name: widget.name,
+                  //                   selectedCategories: sel,
+                  //                 ),
+                  //               ),
+                  //             );
+                  //           }),
+                  //         }
+                  //       : null,
+                  //   child: Text(
+                  //     "Save and Continue",
+                  //     style: TextStyle(color: Color(0xFFB1B8ED)),
+                  //   ),
+                  // ),
+                  child: LNSubmitButton(
+                    submit: () {
+                      setState(() {
+                        sel.clear();
+                        for (var cat in onboardingItems) {
+                          if (cat['state'] == 'selected') {
+                            sel.add(cat['name']);
                           }
-                        : null,
-                    child: Text(
-                      "Save and Continue",
-                      style: TextStyle(color: Color(0xFFB1B8ED)),
-                    ),
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrackMethodScreen(
+                              name: widget.name,
+                              selectedCategories: sel,
+                            ),
+                          ),
+                        );
+                      });
+                    },
+                    submitReq: selectedItems == 3,
+                    btnTxt: "Continue",
                   ),
                 ),
               ),
