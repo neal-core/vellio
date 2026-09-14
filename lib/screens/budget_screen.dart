@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:vellio/components/input_field.dart';
 import 'package:vellio/components/submit_button.dart';
+import 'package:vellio/screens/dashboard_screen.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
 
 class BudgetScreen extends StatefulWidget {
@@ -131,6 +132,10 @@ class _BudgetState extends State<BudgetScreen> {
                           ),
                         ),
                       );
+                      storeOBData(double.parse(finalBudget));
+                      if (context.mounted) {
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Dashboard()), (Route<dynamic> route) => false);
+                      }
                     },
                     submitReq: successCondition,
                     btnTxt: "Continue",
