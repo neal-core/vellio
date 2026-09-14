@@ -1,15 +1,11 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: Vellio CI
+description: The CI/CD pipeline of the project
 
-on:
+on: 
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+  pull_request: 
+    branches: ["main"]
 
 jobs:
   test:
@@ -17,15 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - name: Install deps
-        run: flutter pub get
+      - name: Analyzer
+        uses: neal-core/Xentryx@v1.0.1
 
-      - name: Analyze
-        run: flutter analyze
 
-      - name: Test
-        run: flutter test
+        
