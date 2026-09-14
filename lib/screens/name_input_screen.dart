@@ -22,7 +22,7 @@ class _NameState extends State<NameInput> {
     });
   }
 
-  Future<void> OBEditor() async {
+  Future<void> obEditor() async {
     final OnboardingDataManager manager = OnboardingDataManager();
     await manager.deleteFile();
   }

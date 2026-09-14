@@ -31,9 +31,6 @@ class _BudgetState extends State<BudgetScreen> {
   @override
   void initState() {
     super.initState();
-    print(
-      "Name: ${widget.name}, categories: ${widget.selectedCategories}, track method: ${widget.selectedMethod}",
-    );
   }
 
   void storeOBData(double budget) async {
@@ -48,9 +45,6 @@ class _BudgetState extends State<BudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isDark = Theme.of(context).brightness == Brightness.dark
-        ? true
-        : false;
     late bool successCondition =
         finalBudget.isNotEmpty &&
         finalBudget.trim().length >= 3 &&

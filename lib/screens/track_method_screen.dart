@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vellio/data/trackMethods.dart';
+import 'package:vellio/data/track_methods.dart';
 import 'package:vellio/screens/budget_screen.dart';
 
 class TrackMethodScreen extends StatefulWidget {
@@ -11,7 +11,7 @@ class TrackMethodScreen extends StatefulWidget {
     required this.selectedCategories,
   });
   @override
-  _TrackMethodState createState() => _TrackMethodState();
+  State<TrackMethodScreen> createState() => _TrackMethodState();
 }
 
 class _TrackMethodState extends State<TrackMethodScreen> {
@@ -84,18 +84,24 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                           color: isDark ? null : const Color(0xFFB8BBE0),
                           border: mthd['status'] == 'selected'
                               ? Border.all(
-                                  color: isDark ? const Color(0xE2283081) : const Color(0xFF6E75C3),
+                                  color: isDark
+                                      ? const Color(0xE2283081)
+                                      : const Color(0xFF6E75C3),
                                   width: 1.5,
                                 )
                               : null,
                           boxShadow: [
                             BoxShadow(
-                              color: isDark ? const Color(0xE2202361) : const Color(0xE27F74DD),
+                              color: isDark
+                                  ? const Color(0xE2202361)
+                                  : const Color(0xE27F74DD),
                               blurRadius: 12,
                               spreadRadius: 1,
                             ),
                             BoxShadow(
-                              color: isDark ? Color(0X59000000) : const Color(0xB3C3BAD5),
+                              color: isDark
+                                  ? Color(0X59000000)
+                                  : const Color(0xB3C3BAD5),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -152,7 +158,9 @@ class _TrackMethodState extends State<TrackMethodScreen> {
                                       Icon(
                                         mthd['icon'],
                                         size: 32,
-                                        color: Theme.of(context).textTheme.titleMedium?.color,
+                                        color: Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium?.color,
                                       ),
                                     ],
                                   ),

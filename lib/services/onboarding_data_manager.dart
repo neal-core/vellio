@@ -61,7 +61,6 @@ class OnboardingDataManager {
       final jsonData = jsonDecode(encryptedData);
       return jsonData;
     } catch (e) {
-      print("Failed to read file: $e");
       return null;
     }
   }
