@@ -77,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: IconButton(
-                        onPressed: () => print("Settings page"),
+                        onPressed: () {},
                         icon: Icon(
                           Icons.settings_outlined,
                           color: Theme.of(context).textTheme.titleMedium?.color,
