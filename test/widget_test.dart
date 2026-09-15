@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vellio/components/submit_button.dart';
 
-
 import 'package:vellio/screens/name_input_screen.dart';
 
 void main() {
@@ -28,10 +27,16 @@ void main() {
     await tester.enterText(find.byType(TextField), "Neal Watson");
     await tester.pump();
     subBtn = tester.widget(find.byType(ElevatedButton));
-    expect(subBtn.onPressed, isNotNull, reason: "Characters inputted are greater than 4");
+    expect(
+      subBtn.onPressed,
+      isNotNull,
+      reason: "Characters inputted are greater than 4",
+    );
     await tester.tap(find.text("Continue"));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Select your Primary Categories'), findsOneWidget);
+    expect(
+      find.textContaining('Select your Primary Categories'),
+      findsOneWidget,
+    );
   });
 }
-

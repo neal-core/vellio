@@ -134,7 +134,11 @@ class _BudgetState extends State<BudgetScreen> {
                       );
                       storeOBData(double.parse(finalBudget));
                       if (context.mounted) {
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Dashboard()), (Route<dynamic> route) => false);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => Dashboard()),
+                          (Route<dynamic> route) => false,
+                        );
                       }
                     },
                     submitReq: successCondition,
