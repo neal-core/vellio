@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vellio/components/quick_action_button.dart';
+import 'package:vellio/components/transaction_dialog.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
 
 class Dashboard extends StatefulWidget {
@@ -36,10 +37,27 @@ class _DashboardState extends State<Dashboard> {
     return dataFetched ?? {};
   }
 
+  final TextEditingController titleController = TextEditingController();
+  late String title = "";
   final List<Map<String, dynamic>> myTransactions = [
-    {"title": "Opay Transfer", "amount": 2500, "isDebit": true, "time": "Today, 10:42 AM"},
-    {"title": "Salary Deposit", "amount": 150000, "isDebit": false, "time": "Yesterday, 08:00 AM"},
-    {"title": "Airtime Recharge", "amount": 1000, "isDebit": true, "time": "Sep 12, 02:15 PM"},
+    {
+      "title": "Opay Transfer",
+      "amount": 2500,
+      "isDebit": true,
+      "time": "Today, 10:42 AM",
+    },
+    {
+      "title": "Salary Deposit",
+      "amount": 150000,
+      "isDebit": false,
+      "time": "Yesterday, 08:00 AM",
+    },
+    {
+      "title": "Airtime Recharge",
+      "amount": 1000,
+      "isDebit": true,
+      "time": "Sep 12, 02:15 PM",
+    },
   ];
 
   @override
@@ -73,7 +91,9 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE1E2F4),
+                        color: isDark
+                            ? const Color(0xFF1E293B)
+                            : const Color(0xFFE1E2F4),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: IconButton(
@@ -97,8 +117,12 @@ class _DashboardState extends State<Dashboard> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        isDark ? const Color(0xFF27214F) : const Color(0xFF7D70C9),
-                        isDark ? const Color(0xFF545EA6) : const Color(0xFF9CA5E6),
+                        isDark
+                            ? const Color(0xFF27214F)
+                            : const Color(0xFF7D70C9),
+                        isDark
+                            ? const Color(0xFF545EA6)
+                            : const Color(0xFF9CA5E6),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -121,9 +145,12 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Text(
                         "Total Balance",
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleSmall?.copyWith(fontSize: 16, color: isDark ? Theme.of(context).textTheme.titleSmall?.color : Color(0xFFD9D3FE)),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 16,
+                          color: isDark
+                              ? Theme.of(context).textTheme.titleSmall?.color
+                              : Color(0xFFD9D3FE),
+                        ),
                       ),
                       SizedBox(height: 4),
                       Text(
@@ -140,14 +167,25 @@ class _DashboardState extends State<Dashboard> {
                           QuickActionButton(
                             title: "Add Expense",
                             icon: Icons.remove_circle_outline,
-                            color: isDark ? Color(0xFFEF4444) : Color(0xFFA95A6B),
-                            subFn: () {},
+                            color: isDark
+                                ? Color(0xFFEF4444)
+                                : Color(0xFFA95A6B),
+                            subFn: () {
+                              // transactionModal(context, TransactionType.expense, isDark ? Color(0xFF1A1D2E) : Color(0xFFF6F6FA), titleSuccess);
+                              transactionModal(context, TransactionType.expense, (saveData) {
+                                setState(() {
+                                  myTransactions.insert(0, saveData);
+                                });
+                              });
+                            },
                           ),
                           const SizedBox(width: 12),
                           QuickActionButton(
                             title: "Add Income",
                             icon: Icons.add_circle_outline,
-                            color: isDark ? Color(0xFF10B981) : Color(0xFF427467),
+                            color: isDark
+                                ? Color(0xFF10B981)
+                                : Color(0xFF427467),
                             subFn: () {},
                           ),
                         ],
@@ -172,40 +210,63 @@ class _DashboardState extends State<Dashboard> {
                       "Recent Transactions",
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    TextButton(onPressed: () {}, child: Text("View All", style: Theme.of(context).textTheme.titleSmall,))
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "View All",
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (context, index) {
+                (context, index) {
                   final transaction = myTransactions[index];
                   final bool isDebit = transaction["isDebit"];
                   final String title = transaction["title"];
                   final String time = transaction["time"];
-                  final String amountStr = "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
+                  final String amountStr =
+                      "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
 
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 8.0,
+                    ),
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE8EAF6),
+                        color: isDark
+                            ? const Color(0xFF1E293B)
+                            : const Color(0xFFE8EAF6),
                         borderRadius: BorderRadius.circular(16),
-                        border: isDark ? null : Border.all(color: const Color(0xFFA9AABC), width: 1)
+                        border: isDark
+                            ? null
+                            : Border.all(
+                                color: const Color(0xFFA9AABC),
+                                width: 1,
+                              ),
                       ),
                       child: Row(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: isDebit ? const Color(0xFF450A0A) : const Color(0xFF064E3B),
+                              color: isDebit
+                                  ? const Color(0xFF450A0A)
+                                  : const Color(0xFF064E3B),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Icon(
-                              isDebit ? Icons.arrow_outward : Icons.arrow_downward,
-                              color: isDebit ? const Color(0xFFF87171) : const Color(0xFF34D399),
+                              isDebit
+                                  ? Icons.arrow_outward
+                                  : Icons.arrow_downward,
+                              color: isDebit
+                                  ? const Color(0xFFF87171)
+                                  : const Color(0xFF34D399),
                               size: 20,
                             ),
                           ),
@@ -216,19 +277,31 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Text(
                                   title,
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 16, fontWeight: FontWeight.w500),
+                                  style: Theme.of(context).textTheme.titleMedium
+                                      ?.copyWith(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   time,
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 12),
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(fontSize: 12),
                                 ),
                               ],
                             ),
                           ),
                           Text(
                             amountStr,
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(color: isDebit ? Theme.of(context).textTheme.titleMedium?.color : Color(0xFF34D399)),
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
+                                  color: isDebit
+                                      ? Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium?.color
+                                      : Color(0xFF34D399),
+                                ),
                             // style: TextStyle(
                             //   color: isDebit ? Colors.white : const Color(0xFF34D399),
                             //   fontSize: 16,

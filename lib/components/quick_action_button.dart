@@ -36,9 +36,10 @@ class QuickActionButton extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   title,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.titleMedium?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
