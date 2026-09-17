@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vellio/components/quick_action_button.dart';
 import 'package:vellio/components/transaction_dialog.dart';
+import 'package:vellio/data/transaction_data.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
 
 class Dashboard extends StatefulWidget {
@@ -41,22 +42,25 @@ class _DashboardState extends State<Dashboard> {
   late String title = "";
   final List<Map<String, dynamic>> myTransactions = [
     {
-      "title": "Opay Transfer",
-      "amount": 2500,
-      "isDebit": true,
+      'title': "Opay Transfer",
+      'amount': 2500,
+      'isDebit': true,
+      'category': ExpenseCategories.transfer,
       "time": "Today, 10:42 AM",
     },
     {
       "title": "Salary Deposit",
       "amount": 150000,
       "isDebit": false,
+      'category': ExpenseCategories.utilities,
       "time": "Yesterday, 08:00 AM",
     },
     {
       "title": "Airtime Recharge",
-      "amount": 1000,
-      "isDebit": true,
-      "time": "Sep 12, 02:15 PM",
+      'amount': 1000,
+      'isDebit': true,
+      'category': ExpenseCategories.mobileData,
+      'time': "Sep 12, 02:15 PM",
     },
   ];
 
@@ -171,12 +175,15 @@ class _DashboardState extends State<Dashboard> {
                                 ? Color(0xFFEF4444)
                                 : Color(0xFFA95A6B),
                             subFn: () {
-                              // transactionModal(context, TransactionType.expense, isDark ? Color(0xFF1A1D2E) : Color(0xFFF6F6FA), titleSuccess);
-                              transactionModal(context, TransactionType.expense, (saveData) {
-                                setState(() {
-                                  myTransactions.insert(0, saveData);
-                                });
-                              });
+                              transactionModal(
+                                context,
+                                TransactionType.expense,
+                                (saveData) {
+                                  setState(() {
+                                    myTransactions.insert(0, saveData);
+                                  });
+                                },
+                              );
                             },
                           ),
                           const SizedBox(width: 12),
@@ -228,6 +235,7 @@ class _DashboardState extends State<Dashboard> {
                   final bool isDebit = transaction["isDebit"];
                   final String title = transaction["title"];
                   final String time = transaction["time"];
+                  final String category = expNameLocate(transaction['category']);
                   final String amountStr =
                       "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
 
@@ -283,12 +291,13 @@ class _DashboardState extends State<Dashboard> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                 ),
-                                const SizedBox(height: 4),
+                                const SizedBox(height: 1),
                                 Text(
-                                  time,
+                                  category,
                                   style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(fontSize: 12),
+                                      ?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
                                 ),
+                                Text(time, style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 11),)
                               ],
                             ),
                           ),
@@ -302,18 +311,12 @@ class _DashboardState extends State<Dashboard> {
                                         ).textTheme.titleMedium?.color
                                       : Color(0xFF34D399),
                                 ),
-                            // style: TextStyle(
-                            //   color: isDebit ? Colors.white : const Color(0xFF34D399),
-                            //   fontSize: 16,
-                            //   fontWeight: FontWeight.bold,
-                            // ),
                           ),
                         ],
                       ),
                     ),
                   );
                 },
-                // 3. Crucial step: Tell the list exactly how many items to render
                 childCount: myTransactions.length,
               ),
             ),

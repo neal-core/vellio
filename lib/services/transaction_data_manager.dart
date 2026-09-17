@@ -14,6 +14,7 @@ class TransactionDataManager {
     final directory = await getApplicationDocumentsDirectory();
     return File('${directory.path}/$_fileName');
   }
+
   Future<enc.Key> _getKey() async {
     final base64key = await _secureStorage.read(key: _keyName);
     if (base64key == null) {
@@ -23,12 +24,13 @@ class TransactionDataManager {
     }
     return enc.Key.fromBase64(base64key);
   }
+
   Future<void> writeFile({
     required String title,
     required double amount,
     required TransactionType transaction,
-    required String time
-}) async {
+    required String time,
+  }) async {
     final file = await _getFile;
     final key = await _getKey();
     final iv = enc.IV.fromSecureRandom(16);
@@ -37,8 +39,8 @@ class TransactionDataManager {
         'title': title,
         'amount': amount,
         'transaction_type': transaction,
-        'time': time
-      }
+        'time': time,
+      },
     ];
     final encodedData = jsonEncode(data);
     final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
@@ -46,6 +48,7 @@ class TransactionDataManager {
     final String payload = "${iv.base64}:${encrypted.base64}";
     await file.writeAsString(payload, mode: FileMode.writeOnly);
   }
+
   Future<List<Map<String, dynamic>>> readFile() async {
     final file = await _getFile;
     final key = await _getKey();
@@ -54,7 +57,10 @@ class TransactionDataManager {
     if (splitData.length < 2) return [];
     final iv = enc.IV.fromBase64(splitData[0]);
     final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-    final decryptedData = encrypter.decrypt(enc.Encrypted.from64(splitData[1]), iv: iv);
+    final decryptedData = encrypter.decrypt(
+      enc.Encrypted.from64(splitData[1]),
+      iv: iv,
+    );
     final List<Map<String, dynamic>> decodedData = jsonDecode(decryptedData);
     return decodedData;
   }
@@ -63,30 +69,34 @@ class TransactionDataManager {
     required String title,
     required double amount,
     required TransactionType transaction,
-    required String time
-}) async {
-   final File file = await _getFile;
-   final key = await _getKey();
-   final String rawData = await file.readAsString();
-   final List<String> splitData = rawData.split(':');
-   if (splitData.length < 2) return 1;
-   final iv = enc.IV.fromBase64(splitData[0]);
-   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-   final decryptedData = encrypter.decrypt(enc.Encrypted.from64(splitData[1]), iv: iv);
-   final List<Map<String, dynamic>> decodedData = await jsonDecode(decryptedData);
-   if (decodedData.isEmpty) return 1;
-   final Map<String, dynamic> inputData = {
-     'title': title,
-     'amount': amount,
-     'transaction_type': transaction,
-     'time': time
-   };
-   decodedData.insert(0, inputData);
-   final encodedData = jsonEncode(decodedData);
-   final encryptedData = encrypter.encrypt(encodedData, iv: iv);
-   final payload = "${iv.base64}:${encryptedData.base64}";
-   await file.writeAsString(payload, mode: FileMode.writeOnly);
-   return 0;
+    required String time,
+  }) async {
+    final File file = await _getFile;
+    final key = await _getKey();
+    final String rawData = await file.readAsString();
+    final List<String> splitData = rawData.split(':');
+    if (splitData.length < 2) return 1;
+    final iv = enc.IV.fromBase64(splitData[0]);
+    final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+    final decryptedData = encrypter.decrypt(
+      enc.Encrypted.from64(splitData[1]),
+      iv: iv,
+    );
+    final List<Map<String, dynamic>> decodedData = await jsonDecode(
+      decryptedData,
+    );
+    if (decodedData.isEmpty) return 1;
+    final Map<String, dynamic> inputData = {
+      'title': title,
+      'amount': amount,
+      'transaction_type': transaction,
+      'time': time,
+    };
+    decodedData.insert(0, inputData);
+    final encodedData = jsonEncode(decodedData);
+    final encryptedData = encrypter.encrypt(encodedData, iv: iv);
+    final payload = "${iv.base64}:${encryptedData.base64}";
+    await file.writeAsString(payload, mode: FileMode.writeOnly);
+    return 0;
   }
-
 }

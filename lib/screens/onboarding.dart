@@ -146,33 +146,6 @@ class _OnboardingState extends State<Onboarding> {
                   height: 75,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    // child: ElevatedButton(
-                    //   onPressed: selectedItems == 3
-                    //       ? () => {
-                    //           setState(() {
-                    //             sel.clear();
-                    //             for (var cat in onboardingItems) {
-                    //               if (cat['state'] == 'selected') {
-                    //                 sel.add(cat['name']);
-                    //               }
-                    //             }
-                    //             Navigator.push(
-                    //               context,
-                    //               MaterialPageRoute(
-                    //                 builder: (context) => TrackMethodScreen(
-                    //                   name: widget.name,
-                    //                   selectedCategories: sel,
-                    //                 ),
-                    //               ),
-                    //             );
-                    //           }),
-                    //         }
-                    //       : null,
-                    //   child: Text(
-                    //     "Save and Continue",
-                    //     style: TextStyle(color: Color(0xFFB1B8ED)),
-                    //   ),
-                    // ),
                     child: LNSubmitButton(
                       submit: () {
                         setState(() {
