@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vellio/components/quick_action_button.dart';
+import 'package:vellio/components/transaction_card.dart';
 import 'package:vellio/components/transaction_dialog.dart';
 import 'package:vellio/data/transaction_data.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
@@ -229,96 +230,25 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final transaction = myTransactions[index];
-                  final bool isDebit = transaction["isDebit"];
-                  final String title = transaction["title"];
-                  final String time = transaction["time"];
-                  final String category = expNameLocate(transaction['category']);
-                  final String amountStr =
-                      "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final transaction = myTransactions[index];
+                final bool isDebit = transaction["isDebit"];
+                final String title = transaction["title"];
+                final String time = transaction["time"];
+                final String category = expNameLocate(transaction['category']);
+                final String amountStr =
+                    "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
-                      vertical: 8.0,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF1E293B)
-                            : const Color(0xFFE8EAF6),
-                        borderRadius: BorderRadius.circular(16),
-                        border: isDark
-                            ? null
-                            : Border.all(
-                                color: const Color(0xFFA9AABC),
-                                width: 1,
-                              ),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: isDebit
-                                  ? const Color(0xFF450A0A)
-                                  : const Color(0xFF064E3B),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(
-                              isDebit
-                                  ? Icons.arrow_outward
-                                  : Icons.arrow_downward,
-                              color: isDebit
-                                  ? const Color(0xFFF87171)
-                                  : const Color(0xFF34D399),
-                              size: 20,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  title,
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                ),
-                                const SizedBox(height: 1),
-                                Text(
-                                  category,
-                                  style: Theme.of(context).textTheme.labelSmall
-                                      ?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
-                                ),
-                                Text(time, style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 11),)
-                              ],
-                            ),
-                          ),
-                          Text(
-                            amountStr,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: isDebit
-                                      ? Theme.of(
-                                          context,
-                                        ).textTheme.titleMedium?.color
-                                      : Color(0xFF34D399),
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                childCount: myTransactions.length,
-              ),
+                return TransactionCard(
+                  title: title,
+                  amount: amountStr,
+                  category: category,
+                  time: time,
+                  transactionType: isDebit
+                      ? TransactionType.expense
+                      : TransactionType.income,
+                );
+              }, childCount: myTransactions.length),
             ),
           ],
         ),
