@@ -67,6 +67,7 @@ class TransactionCard extends StatelessWidget {
                     category,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       fontSize: 12,
+                      color: isDark ? Color(0xFFD3CBCB) : Theme.of(context).textTheme.labelSmall?.color,
                       fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.italic,
                     ),
