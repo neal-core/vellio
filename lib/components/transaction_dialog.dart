@@ -65,7 +65,6 @@ void transactionModal(
             return false;
           }
 
-          ;
           return Center(
             child: Material(
               color: Colors.transparent,
