@@ -53,7 +53,7 @@ class _DashboardState extends State<Dashboard> {
       "title": "Salary Deposit",
       "amount": 150000,
       "isDebit": false,
-      'category': ExpenseCategories.utilities,
+      'category': IncomeCategories.wages,
       "time": "Yesterday, 08:00 AM",
     },
     {
@@ -194,7 +194,13 @@ class _DashboardState extends State<Dashboard> {
                             color: isDark
                                 ? Color(0xFF10B981)
                                 : Color(0xFF427467),
-                            subFn: () {},
+                            subFn: () {
+                              transactionModal(context, TransactionType.income, (saveData) {
+                                setState(() {
+                                  myTransactions.insert(0, saveData);
+                                });
+                              });
+                            },
                           ),
                         ],
                       ),
@@ -235,7 +241,7 @@ class _DashboardState extends State<Dashboard> {
                 final bool isDebit = transaction["isDebit"];
                 final String title = transaction["title"];
                 final String time = transaction["time"];
-                final String category = expNameLocate(transaction['category']);
+                final String category = isDebit ? expNameLocate(transaction['category']) : incNameLocate(transaction['category']);
                 final String amountStr =
                     "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
 
