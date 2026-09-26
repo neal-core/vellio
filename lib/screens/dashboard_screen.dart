@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vellio/components/quick_action_button.dart';
+import 'package:vellio/components/settings_dialog.dart';
 import 'package:vellio/components/transaction_card.dart';
 import 'package:vellio/components/transaction_dialog.dart';
 import 'package:vellio/data/transaction_data.dart';
+import 'package:vellio/screens/settings_screen.dart';
 import 'package:vellio/services/onboarding_data_manager.dart';
 
 class Dashboard extends StatefulWidget {
@@ -102,7 +104,15 @@ class _DashboardState extends State<Dashboard> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          final SettingsDialog settingsClass = SettingsDialog(
+                            initSize: 0.6,
+                            minSize: 0.4,
+                            maxSize: 0.95,
+                          );
+                          // settingsClass.showDialog(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                        },
                         icon: Icon(
                           Icons.settings_outlined,
                           color: Theme.of(context).textTheme.titleMedium?.color,
@@ -195,11 +205,15 @@ class _DashboardState extends State<Dashboard> {
                                 ? Color(0xFF10B981)
                                 : Color(0xFF427467),
                             subFn: () {
-                              transactionModal(context, TransactionType.income, (saveData) {
-                                setState(() {
-                                  myTransactions.insert(0, saveData);
-                                });
-                              });
+                              transactionModal(
+                                context,
+                                TransactionType.income,
+                                (saveData) {
+                                  setState(() {
+                                    myTransactions.insert(0, saveData);
+                                  });
+                                },
+                              );
                             },
                           ),
                         ],
@@ -241,7 +255,9 @@ class _DashboardState extends State<Dashboard> {
                 final bool isDebit = transaction["isDebit"];
                 final String title = transaction["title"];
                 final String time = transaction["time"];
-                final String category = isDebit ? expNameLocate(transaction['category']) : incNameLocate(transaction['category']);
+                final String category = isDebit
+                    ? expNameLocate(transaction['category'])
+                    : incNameLocate(transaction['category']);
                 final String amountStr =
                     "${isDebit ? '-' : '+'}₦${NumberFormat('#,###.##').format(transaction['amount'])}";
 

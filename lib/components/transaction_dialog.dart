@@ -9,7 +9,6 @@ import 'package:vellio/data/transaction_data.dart';
 
 enum TransactionType { income, expense }
 
-
 final List<String> months = [
   'Jan',
   'Feb',
@@ -24,7 +23,6 @@ final List<String> months = [
   'Nov',
   'Dec',
 ];
-
 
 void transactionModal(
   BuildContext context,
@@ -87,7 +85,9 @@ void transactionModal(
                     ),
                     SizedBox(height: 20),
                     LNInput(
-                      hintText: transactionType == TransactionType.expense ? "e.g. Groceries" : "e.g. Salary",
+                      hintText: transactionType == TransactionType.expense
+                          ? "e.g. Groceries"
+                          : "e.g. Salary",
                       labelText: "Title",
                       keyboardType: TextInputType.text,
                       textController: titleController,
@@ -151,7 +151,9 @@ void transactionModal(
                           'title': title,
                           'amount': amount,
                           'isDebit': transactionType == TransactionType.expense,
-                          'category': transactionType == TransactionType.expense ? expIdLocate(selectedCategory!) : incIdLocate(selectedCategory!),
+                          'category': transactionType == TransactionType.expense
+                              ? expIdLocate(selectedCategory!)
+                              : incIdLocate(selectedCategory!),
                           'time':
                               "${months[currentTime.month - 1]} ${currentTime.day}, ${currentTime.year}, $formattedDate",
                         };

@@ -1,4 +1,6 @@
 import "package:flutter/material.dart";
+import "package:flutter_windowmanager_plus/flutter_windowmanager_plus.dart";
+import "package:vellio/executors/sms_executor.dart";
 import "package:vellio/screens/dashboard_screen.dart";
 import "package:vellio/screens/name_input_screen.dart";
 import "package:vellio/services/onboarding_data_manager.dart";
@@ -9,6 +11,11 @@ void main() async {
   final OnboardingDataManager datamanager = OnboardingDataManager();
   final userdata = await datamanager.readFile();
   bool syncComplete = userdata != null ? true : false;
+  /*  if (syncComplete) {
+    await SmsExecutor.initialize();
+  }*/
+  await FlutterWindowManagerPlus.setSecure(true);
+  await FlutterWindowManagerPlus.addFlags(FlutterWindowManagerPlus.FLAG_KEEP_SCREEN_ON);
   runApp(MainScreen(syncComplete: syncComplete));
 }
 
