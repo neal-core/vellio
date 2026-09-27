@@ -111,7 +111,12 @@ class _DashboardState extends State<Dashboard> {
                             maxSize: 0.95,
                           );
                           // settingsClass.showDialog(context);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SettingsScreen(),
+                            ),
+                          );
                         },
                         icon: Icon(
                           Icons.settings_outlined,

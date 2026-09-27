@@ -41,6 +41,7 @@ final ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.w600,
       color: Color(0xFF797C9E),
     ),
+    bodySmall: const TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),
   ),
   cardTheme: const CardThemeData(
     color: Colors.white,
@@ -99,6 +100,11 @@ final ThemeData darkTheme = ThemeData(
     bodyLarge: const TextStyle(
       fontWeight: FontWeight.w600,
       color: Color(0xFFCCD2FF),
+    ),
+    bodySmall: TextStyle(
+      fontWeight: FontWeight.w400,
+      // color: Color(0xFF9AA4FF),
+      color: Colors.grey[400],
     ),
   ),
   cardTheme: CardThemeData(

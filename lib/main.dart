@@ -15,7 +15,9 @@ void main() async {
     await SmsExecutor.initialize();
   }*/
   await FlutterWindowManagerPlus.setSecure(true);
-  await FlutterWindowManagerPlus.addFlags(FlutterWindowManagerPlus.FLAG_KEEP_SCREEN_ON);
+  await FlutterWindowManagerPlus.addFlags(
+    FlutterWindowManagerPlus.FLAG_KEEP_SCREEN_ON,
+  );
   runApp(MainScreen(syncComplete: syncComplete));
 }
 
