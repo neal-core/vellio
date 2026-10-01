@@ -14,7 +14,7 @@ enum IncomeCategories {
   transfers,
   investments,
   gifts,
-  refunds
+  refunds,
 }
 
 List<Map<String, dynamic>> categories = [
@@ -22,11 +22,11 @@ List<Map<String, dynamic>> categories = [
     'id': 'income',
     'name': 'Income',
     'items': [
-      {'id': IncomeCategories.wages, 'name' :'Salary & Wages'},
+      {'id': IncomeCategories.wages, 'name': 'Salary & Wages'},
       {'id': IncomeCategories.clientWork, 'name': 'Freelance & Client Work'},
       {'id': IncomeCategories.transfers, 'name': 'Transfers Received'},
       {'id': IncomeCategories.investments, 'name': 'Investments & Yields'},
-      {'id': IncomeCategories.gifts, 'name' :'Gifts & Bonuses'},
+      {'id': IncomeCategories.gifts, 'name': 'Gifts & Bonuses'},
       {'id': IncomeCategories.refunds, 'name': 'Refunds & Reversals'},
     ],
   },
@@ -58,8 +58,11 @@ void expSet(List<String> expenseList) {
     expenseList.add(cat['name']);
   }
 }
+
 void incSet(List<String> incomeList) {
-  final List<Map<String, dynamic>> incCat = categories.firstWhere((cat) => cat['id'] == 'income')['items'] as List<Map<String, dynamic>>;
+  final List<Map<String, dynamic>> incCat =
+      categories.firstWhere((cat) => cat['id'] == 'income')['items']
+          as List<Map<String, dynamic>>;
   for (var c in incCat) {
     incomeList.add(c['name']);
   }
@@ -76,7 +79,9 @@ String expNameLocate(ExpenseCategories categoryId) {
 }
 
 String incNameLocate(IncomeCategories categoryId) {
-  final List<Map<String, dynamic>> incCat = categories.firstWhere((cat) => cat['id'] == 'income')['items'];
+  final List<Map<String, dynamic>> incCat = categories.firstWhere(
+    (cat) => cat['id'] == 'income',
+  )['items'];
   final incomeData = incCat.firstWhere((inc) => inc['id'] == categoryId);
   return incomeData['name'];
 }
@@ -92,7 +97,11 @@ dynamic expIdLocate(String categoryName) {
 }
 
 dynamic incIdLocate(String categoryName) {
-  final List<Map<String, dynamic>> incCat = categories.firstWhere((cat) => cat['id'] == 'income')['items'];
-  final Map<String, dynamic> incData = incCat.firstWhere((inc) => inc['name'] == categoryName);
+  final List<Map<String, dynamic>> incCat = categories.firstWhere(
+    (cat) => cat['id'] == 'income',
+  )['items'];
+  final Map<String, dynamic> incData = incCat.firstWhere(
+    (inc) => inc['name'] == categoryName,
+  );
   return incData['id'];
 }
