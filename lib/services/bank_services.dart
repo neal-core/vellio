@@ -1,15 +1,20 @@
 class BankServices {
-  static const bankLogoPath = "assets/logos/banks";
+  static const _bankLogoPath = "assets/logos/banks";
   List<Map<String, dynamic>> bankList = [
     {
       'id': 'access',
       'name': 'Access Bank Plc',
-      'icon': '$bankLogoPath/access.png',
+      'icon': '$_bankLogoPath/access.png',
     },
     {
       'id': 'alpha_morgan',
       'name': 'Alpha Morgan Bank',
-      'icon': '$bankLogoPath/alpha_morgan.png',
+      'icon': '$_bankLogoPath/alpha_morgan.png',
     },
+    {'id': 'citi', 'name': 'Citibank Ltd', 'icon': '$_bankLogoPath/citi.png'},
   ];
+  String getNameById(String id) {
+    final bankLocation = bankList.firstWhere((bank) => bank['id'] == id);
+    return bankLocation['name'];
+  }
 }

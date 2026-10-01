@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vellio/components/forward_arrow.dart';
 import 'package:vellio/components/list_modal.dart';
-import 'package:vellio/components/settings_modal.dart';
 import 'package:vellio/components/settings_tile.dart';
 import 'package:vellio/screens/settings_card.dart';
 import 'package:vellio/services/bank_services.dart';
@@ -31,12 +30,15 @@ class _SettingsState extends State<SettingsScreen> {
   String importedAppTheme = 'system';
   String importedCurrencyValueFormat = 'standard';
   String importedBank = 'access';
+  bool importedCalculateFees = false;
   Future<void> saveSettings() async {
     Map<String, dynamic> data = {
       "appLock": appLockValue,
       "privacyMode": privacyModeValue,
       "currencyValue": currencyFormatValue,
       "appTheme": appTheme,
+      "bank": selectedBank,
+      "calculateFees": calculateFees,
     };
     final FileManager fileManager = FileManager(
       fileName: "stn-dt",
@@ -51,11 +53,15 @@ class _SettingsState extends State<SettingsScreen> {
   IconData appThemeIcon = Icons.laptop_mac_outlined;
   late String currencyFormatValue = importedCurrencyValueFormat;
   late String selectedBank = importedBank;
+  late String selectedBankName = "";
+  late bool calculateFees = importedCalculateFees;
   bool get unsavedChanges =>
       appLockValue != importedAppLockValue ||
       privacyModeValue != importedPrivacyModeValue ||
+      appTheme != importedAppTheme ||
       currencyFormatValue != importedCurrencyValueFormat ||
-      selectedBank != importedBank;
+      selectedBank != importedBank ||
+      calculateFees != importedCalculateFees;
 
   Future<void> retrieveSettings() async {
     final FileManager fileManager = FileManager(
@@ -92,6 +98,8 @@ class _SettingsState extends State<SettingsScreen> {
       currencyFormatValue = importedCurrencyValueFormat;
       appTheme = importedAppTheme;
       selectedBank = importedBank;
+      final BankServices bankServices = BankServices();
+      selectedBankName = bankServices.getNameById(importedBank);
     });
   }
 
@@ -124,10 +132,7 @@ class _SettingsState extends State<SettingsScreen> {
             color: Color(0xFF1E293B),
           ),
         ),
-        title: Text(
-          "Settings",
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        title: Text("Settings", style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
       ),
       body: Stack(
@@ -189,7 +194,8 @@ class _SettingsState extends State<SettingsScreen> {
                   SettingsTile(
                     icon: Icons.account_balance,
                     title: 'Primary Bank',
-                    subtitle: selectedBank,
+                    subtitle: selectedBankName,
+                    trailingWidget: forwardArrow,
                     submitFn: () async {
                       final BankServices bankServices = BankServices();
                       final ListModal listModal = ListModal(
@@ -200,6 +206,9 @@ class _SettingsState extends State<SettingsScreen> {
                         pageState: setState,
                         saveSelectedValue: (String importedBankValue) {
                           selectedBank = importedBankValue;
+                          selectedBankName = bankServices.getNameById(
+                            importedBankValue,
+                          );
                         },
                         trailingWidget: Icon(
                           Icons.check_circle,
@@ -208,6 +217,17 @@ class _SettingsState extends State<SettingsScreen> {
                       );
                       await listModal.showModal();
                     },
+                  ),
+                  Divider(height: 1, color: const Color(0x4C676767)),
+                  SettingsTile(
+                    icon: Icons.calculate_outlined,
+                    title: "Calculate Fees",
+                    subtitle: "Automatically log bank charges",
+                    submitFn: () {},
+                    trailingValue: calculateFees,
+                    trailingFn: (bool value) => setState(() {
+                      calculateFees = value;
+                    }),
                   ),
                 ],
               ),
@@ -244,7 +264,7 @@ class _SettingsState extends State<SettingsScreen> {
                         appLockValue = val;
                       }),
                     ),
-                    Divider(height: 1, color: Color(0x4C676767)),
+                    Divider(height: 1, color: const Color(0x4C676767)),
                     SettingsTile(
                       icon: Icons.visibility_off_outlined,
                       title: "Privacy Mode",
