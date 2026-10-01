@@ -1,7 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:vellio/components/forward_arrow.dart';
+import 'package:vellio/components/list_modal.dart';
+import 'package:vellio/components/settings_modal.dart';
 import 'package:vellio/components/settings_tile.dart';
 import 'package:vellio/screens/settings_card.dart';
+import 'package:vellio/services/bank_services.dart';
 import 'package:vellio/services/color_manager.dart';
+import 'package:vellio/services/file_manager.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -10,15 +16,98 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsState extends State<SettingsScreen> {
-  late bool appLockValue = false;
-  late bool privacyModeValue = false;
   final List<Map<String, String>> formats = [
     {'id': 'standard', 'value': 'Standard—e.g. ₦15,000.00'},
     {'id': 'compact', 'value': 'Compact—e.g. ₦15k'},
     {'id': 'international', 'value': 'International—e.g. ₦15,000'},
   ];
-  String currencyFormatValue = "standard";
-  late bool unsavedChanges = false;
+  final List<Map<String, dynamic>> themes = [
+    {'id': 'light', 'value': 'Light Mode', 'icon': Icons.light_mode_outlined},
+    {'id': 'dark', 'value': 'Dark Mode', 'icon': Icons.dark_mode_outlined},
+    {'id': 'system', 'value': 'System Mode', 'icon': Icons.laptop_mac_outlined},
+  ];
+  bool importedAppLockValue = false;
+  bool importedPrivacyModeValue = false;
+  String importedAppTheme = 'system';
+  String importedCurrencyValueFormat = 'standard';
+  String importedBank = 'access';
+  Future<void> saveSettings() async {
+    Map<String, dynamic> data = {
+      "appLock": appLockValue,
+      "privacyMode": privacyModeValue,
+      "currencyValue": currencyFormatValue,
+      "appTheme": appTheme,
+    };
+    final FileManager fileManager = FileManager(
+      fileName: "stn-dt",
+      keyName: "stn-key",
+    );
+    await fileManager.writeFile(data, DataTypes.settings);
+  }
+
+  late bool appLockValue = importedAppLockValue;
+  late bool privacyModeValue = importedPrivacyModeValue;
+  late String appTheme = importedAppTheme;
+  IconData appThemeIcon = Icons.laptop_mac_outlined;
+  late String currencyFormatValue = importedCurrencyValueFormat;
+  late String selectedBank = importedBank;
+  bool get unsavedChanges =>
+      appLockValue != importedAppLockValue ||
+      privacyModeValue != importedPrivacyModeValue ||
+      currencyFormatValue != importedCurrencyValueFormat ||
+      selectedBank != importedBank;
+
+  Future<void> retrieveSettings() async {
+    final FileManager fileManager = FileManager(
+      fileName: "stn-dt",
+      keyName: "stn-key",
+    );
+    final Map<String, dynamic> data = await fileManager.readFile();
+    if (data.isNotEmpty) {
+      setState(() {
+        importedAppLockValue = data['appLock'];
+        importedPrivacyModeValue = data['privacyMode'];
+        importedCurrencyValueFormat = data['currencyValue'];
+        importedAppTheme = data['appTheme'] ?? "system";
+        importedBank = data['bank'] ?? 'access';
+      });
+      print("Data: $data");
+    } else {
+      setState(() {
+        importedPrivacyModeValue = false;
+        importedAppLockValue = false;
+        importedCurrencyValueFormat = "standard";
+        importedAppTheme = "system";
+        importedBank = 'access';
+      });
+      print("No data found");
+    }
+    setState(() {});
+  }
+
+  void resetSettings() {
+    setState(() {
+      appLockValue = importedAppLockValue;
+      privacyModeValue = importedPrivacyModeValue;
+      currencyFormatValue = importedCurrencyValueFormat;
+      appTheme = importedAppTheme;
+      selectedBank = importedBank;
+    });
+  }
+
+  late final StateSetter bankModalState;
+  late final BuildContext modalCtx;
+  void startupFn() async {
+    await retrieveSettings();
+    resetSettings();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startupFn();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isDark = Theme.of(context).brightness == Brightness.dark;
@@ -35,7 +124,10 @@ class _SettingsState extends State<SettingsScreen> {
             color: Color(0xFF1E293B),
           ),
         ),
-        title: Text("Settings", style: Theme.of(context).textTheme.titleLarge),
+        title: Text(
+          "Settings",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         centerTitle: true,
       ),
       body: Stack(
@@ -43,7 +135,7 @@ class _SettingsState extends State<SettingsScreen> {
           ListView(
             padding: const EdgeInsets.all(24.0),
             children: [
-              Text(
+              /*Text(
                 "Automation",
                 style: Theme.of(context).textTheme.titleMedium,
               ),
@@ -90,6 +182,34 @@ class _SettingsState extends State<SettingsScreen> {
                     ),
                   ],
                 ),
+              ),*/
+              SettingsCard(
+                title: 'Automation',
+                children: [
+                  SettingsTile(
+                    icon: Icons.account_balance,
+                    title: 'Primary Bank',
+                    subtitle: selectedBank,
+                    submitFn: () async {
+                      final BankServices bankServices = BankServices();
+                      final ListModal listModal = ListModal(
+                        modalValue: bankServices.bankList,
+                        title: "Select a Primary Bank",
+                        ctx: context,
+                        defaultValue: selectedBank,
+                        pageState: setState,
+                        saveSelectedValue: (String importedBankValue) {
+                          selectedBank = importedBankValue;
+                        },
+                        trailingWidget: Icon(
+                          Icons.check_circle,
+                          color: const Color(0xFF7D70C9),
+                        ),
+                      );
+                      await listModal.showModal();
+                    },
+                  ),
+                ],
               ),
               SizedBox(height: 32),
               Text(
@@ -119,18 +239,6 @@ class _SettingsState extends State<SettingsScreen> {
                       title: "App Lock",
                       subtitle: "Require PIN or fingerprint to open",
                       submitFn: () {},
-                      /*trailingWidget: Switch(
-                    value: false,
-                    onChanged: (val) {
-                      s
-                    },
-                    trackColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return colorManager.themeColSet(0xFF7D70C9, 0xFF7D70C9);
-                      }
-                      return Colors.grey[800];
-                    }),
-                  ),*/
                       trailingValue: appLockValue,
                       trailingFn: (val) => setState(() {
                         appLockValue = val;
@@ -155,22 +263,100 @@ class _SettingsState extends State<SettingsScreen> {
                 title: "Appearance & Formatting",
                 children: [
                   SettingsTile(
-                    icon: isDark
-                        ? Icons.dark_mode_outlined
-                        : Icons.light_mode_outlined,
+                    icon: appThemeIcon,
                     title: "App Theme",
-                    subtitle: isDark ? "Dark Mode" : "Light Mode",
-                    submitFn: () {},
-                    trailingValue: isDark,
-                    trailingFn: (val) => setState(() {
-                      isDark = val;
-                    }),
+                    subtitle: appTheme,
+                    submitFn: () {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: Theme.of(context).cardColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(24),
+                          ),
+                        ),
+                        builder: (BuildContext context) {
+                          return StatefulBuilder(
+                            builder:
+                                (BuildContext ctx, StateSetter setThemeState) {
+                                  return SafeArea(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 24.0,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            "App Theme",
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.titleMedium,
+                                          ),
+                                          SizedBox(height: 16),
+                                          RadioGroup<String>(
+                                            groupValue: appTheme,
+                                            onChanged: (String? value) {
+                                              setThemeState(() {
+                                                appTheme = value!;
+                                                final themeLocation = themes
+                                                    .firstWhere(
+                                                      (theme) =>
+                                                          theme['id'] == value,
+                                                    );
+                                                appThemeIcon =
+                                                    themeLocation['icon'];
+                                              });
+                                              setState(() {
+                                                appTheme = value!;
+                                                final themeLocation = themes
+                                                    .firstWhere(
+                                                      (theme) =>
+                                                          theme['id'] == value,
+                                                    );
+                                                appThemeIcon =
+                                                    themeLocation['icon'];
+                                              });
+                                              Navigator.pop(ctx);
+                                            },
+                                            child: Column(
+                                              children: [
+                                                ...themes.map((theme) {
+                                                  return RadioListTile<String>(
+                                                    value: theme['id']!,
+                                                    title: Text(
+                                                      theme['value']!,
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.bodyLarge,
+                                                    ),
+                                                    activeColor: colorManager
+                                                        .themeColSet(
+                                                          0xFF7D70C9,
+                                                          0xFF7D70C9,
+                                                        ),
+                                                  );
+                                                }),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                          );
+                        },
+                      );
+                    },
+                    trailingWidget: forwardArrow,
                   ),
                   Divider(height: 1, color: Color(0x4C676767)),
                   SettingsTile(
                     icon: Icons.payment_outlined,
                     title: "Currency Format",
                     subtitle: currencyFormatValue,
+                    trailingWidget: forwardArrow,
                     submitFn: () {
                       showModalBottomSheet(
                         context: context,
@@ -211,7 +397,6 @@ class _SettingsState extends State<SettingsScreen> {
                                               setState(() {
                                                 currencyFormatValue = value!;
                                               });
-                                              unsavedChanges = !unsavedChanges;
                                               Navigator.pop(ctx);
                                             },
                                             child: Column(
@@ -297,9 +482,7 @@ class _SettingsState extends State<SettingsScreen> {
                           ),
                         ),
                     onPressed: () {
-                      setState(() {
-                        unsavedChanges = false;
-                      });
+                      resetSettings();
                     },
                     child: Text(
                       "Discard",
@@ -308,7 +491,7 @@ class _SettingsState extends State<SettingsScreen> {
                       ).textTheme.bodyMedium?.copyWith(color: Colors.white),
                     ),
                   ),
-                  SizedBox(width: 8,),
+                  SizedBox(width: 8),
                   TextButton(
                     style: Theme.of(context).elevatedButtonTheme.style
                         ?.copyWith(
@@ -321,7 +504,15 @@ class _SettingsState extends State<SettingsScreen> {
                             ),
                           ),
                         ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await saveSettings();
+                      appLockValue = importedAppLockValue;
+                      privacyModeValue = importedPrivacyModeValue;
+                      currencyFormatValue = importedCurrencyValueFormat;
+                      if (kDebugMode) {
+                        print("Saved data");
+                      }
+                    },
                     child: Text(
                       "Save",
                       style: Theme.of(
